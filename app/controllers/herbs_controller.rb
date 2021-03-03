@@ -1,0 +1,3 @@
+class HerbsController
+
+end

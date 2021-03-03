@@ -1,0 +1,3 @@
+class TincturesController
+
+end
