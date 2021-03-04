@@ -1,0 +1,21 @@
+<h2>Add a New Product</h2>
+    <form action="/products" method="post">
+        <p>Name <input type="text" id="name" name="name"></p>
+        <%# Product type, need to either predetermine "types" or allow user to add and edit their own %>
+        <%# <p>Type <input type="text" id="type" name="type"></p> %>
+        <p>
+            Type
+            <input type="radio" id="herb" name="category" value="Herb"><label for="category"> Herb</label>
+            <input type="radio" id="tincture" name="category" value="Tincture"><label for="category"> Tincture</label>
+            <input type="radio" id="product" name="category" value="Product"><label for="category"> Product</label>  
+            <input type="radio" id="other" name="category" value="Other"><label for="category"> Other</label>                      
+        </p>
+        <p>Inventory (oz or item) <input type="text" id="inventory" name="inventory"></p>
+        <p>Source <input type="text" id="source" name="source"></p>
+        <p>Cost of Good (by oz or item) <input type="text" id="cost_of_good" name="cost_of_good"></p>
+        <p>Retail Price <input type="text" id="retail_price" name="retail_price"></p>
+        
+       
+        <p><input type="submit" value="Add Product"></p>
+    
+    </form>

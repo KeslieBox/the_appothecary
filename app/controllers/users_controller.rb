@@ -13,7 +13,6 @@ class UsersController < ApplicationController
     post '/signup' do 
         user = User.create(params)
         # binding.pry
-        # need to make sure username is not empty
         if user.id 
           session[:user_id] = user.id
           redirect "/users/#{user.id}"
@@ -26,8 +25,6 @@ class UsersController < ApplicationController
     get '/users/:id' do
         redirect_if_not_logged_in
         @user = User.find_by(id: params[:id])
-        @herbs = Herb.all
-        @tinctures = Tincture.all
         @products = Product.all
 
         erb :"/users/show"

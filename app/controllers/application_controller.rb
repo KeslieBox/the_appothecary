@@ -28,6 +28,13 @@ class ApplicationController < Sinatra::Base
         redirect '/login' unless current_user
     end
 
+    def redirect_if_not_owner(obj)
+      if !check_owner(obj)
+        flash[:message] = "Homie don't play that!"
+        redirect '/items'
+      end
+    end
+
     def check_owner(obj)
         obj && obj.user == current_user
     end
