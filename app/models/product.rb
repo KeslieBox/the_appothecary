@@ -3,5 +3,5 @@ class Product < ActiveRecord::Base
 
     validates_uniqueness_of(:name)
     validates :name, presence: true
-    # validates :category, presence: true
+    validates :category, presence: true
 end

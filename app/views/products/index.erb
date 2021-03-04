@@ -1,0 +1,6 @@
+<h2>Products</h2>
+    <ol>
+    <% @products.each do |product| %>
+        <li><a href="/products/<%=product.id%>"><%=product.name%></a>
+    <%end%>
+    </ol>

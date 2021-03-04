@@ -2,7 +2,7 @@ class ProductsController < ApplicationController
     get '/products' do  
         @products = Product.all
         @product = Product.find_by(id: params[:id])
-        erb :"/products/show"
+        erb :"/products/index"
     end
  
     get '/products/new' do
@@ -13,8 +13,8 @@ class ProductsController < ApplicationController
 
     post '/products' do
         redirect_if_not_logged_in
-        product = current_user.products.create(params)
-        # need to figure out best way to check that they fill in form correctly
+        product = current_user.products.create(params[:product])
+
         if product.id
             redirect "/products/#{product.id}"
         else  
@@ -22,20 +22,38 @@ class ProductsController < ApplicationController
             redirect "/products/new"
         end
     end
-
+ 
     get '/products/:id' do
+        redirect_if_not_logged_in
+        @product = Product.find_by(id: params[:id])
+        if !@product
+            redirect "/products"
+        end
+
+        erb :"/products/show"
+    end
+    
+    get '/products/:id/edit' do
         redirect_if_not_logged_in
 
         @product = Product.find_by(id: params[:id])
         @products = Product.all
 
-        if !@product
-            redirect "/users/#{session[:id]}"
-        end
-        erb :"/products/show"
+        erb :"/products/edit"
     end
 
     patch '/products/:id' do
-        
+        redirect_if_not_logged_in
+        @product = Product.find_by(id: params[:id])
+        @product.update(params[:product])
+      
+        erb :"/products/show"        
+    end
+
+    delete '/products/:id' do
+        redirect_if_not_logged_in
+        @product = Product.find_by(id: params[:id])
+        @product.delete
+        redirect "/products"
     end
 end
