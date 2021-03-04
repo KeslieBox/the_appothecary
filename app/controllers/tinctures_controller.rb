@@ -1,3 +1,3 @@
-class TincturesController
+class TincturesController < ApplicationController
 
 end

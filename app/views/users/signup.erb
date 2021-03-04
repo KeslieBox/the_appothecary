@@ -2,6 +2,10 @@
 
 <h3>Please sign up to create an account</h3>
 
+<% @errors && @errors.each do |m| %>
+  <li><%=m%></li>
+<%end%>
+<br>
 
 <form action="/signup" method="post">
   <p>Username: <input type="text" name="username" id="username"></p>

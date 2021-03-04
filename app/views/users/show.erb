@@ -1,0 +1,10 @@
+<h1>Welcome to your Appothecary, <%= @user.username%>! </h1>
+
+<%=flash[:message]%>
+
+<ul>
+  <% @herbs.each do |herb| %>
+    <li><a href="/herbs/<%=herb.id%>"><%=herb.name%></a></li>
+  <%end%>
+
+</ul>

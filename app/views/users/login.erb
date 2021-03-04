@@ -1,0 +1,14 @@
+<h2>Please login to access your account</h2>
+
+<%@errors && @errors.each do |m|%>
+    <li><%=m%></li>
+<%end%>
+<br>
+
+<form action="/login" method="post">
+   <p>Username: <input type="text" name="username" id="username"></p>
+   <p>Password: <input type="password" name="password" id="password"></p>
+   <input type="submit" name="" id="submit" value="Log In">
+ </form>
+ <br>
+<p>Not a member yet?   <a href="/signup">Sign up here</a></p>
