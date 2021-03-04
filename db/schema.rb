@@ -10,24 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_03_034904) do
-
-  create_table "herbs", force: :cascade do |t|
-    t.string "name"
-    t.integer "quantity_oz"
-    t.integer "user_id"
-  end
+ActiveRecord::Schema.define(version: 2021_03_03_034858) do
 
   create_table "products", force: :cascade do |t|
     t.string "name"
-    t.integer "quantity"
-    t.string "company"
-    t.integer "user_id"
-  end
-
-  create_table "tinctures", force: :cascade do |t|
-    t.string "name"
-    t.integer "quantity_oz"
+    t.string "type"
+    t.integer "inventory"
+    t.integer "cost_of_good"
+    t.integer "retail_price"
+    t.string "source"
     t.integer "user_id"
   end
 
