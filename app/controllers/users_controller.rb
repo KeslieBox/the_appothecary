@@ -25,9 +25,13 @@ class UsersController < ApplicationController
     get '/users/:id' do
         redirect_if_not_logged_in
         @user = User.find_by(id: params[:id])
-        @products = Product.all
+        @products = @user.products
 
-        erb :"/users/show"
+        if !@user
+            erb :"/users/login"
+        else
+            erb :"/users/show"
+        end
     end
 
     get '/login' do
@@ -42,7 +46,7 @@ class UsersController < ApplicationController
 
         if user && user.authenticate(params[:password]) 
             session[:user_id] = user.id
-            flash[:message] = "Logged in successfully"
+            flash[:message] = ["Logged in successfully"]
             redirect "/users/#{user.id}"
         else 
             @errors = ["Invalid login, please make sure your username and password are correct"]

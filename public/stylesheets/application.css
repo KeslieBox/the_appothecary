@@ -1,0 +1,98 @@
+
+ /* --- Welcome Page Styles --- */
+
+ /* Centered title */
+    .centered {
+        position: absolute;
+        top: 46%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #faebd7d6;
+        padding-left: 103px;
+        padding-right: 103px;
+        padding-top: 66px;
+        padding-bottom: 66px;
+        border: outset;
+        border-width: 18px;
+        border-color: black;
+        opacity: 0.8;
+    }
+
+    /*Centered image*/
+    .center {
+        display: block;
+        margin: auto;
+        width: 90%;
+    } 
+
+    /*Watermarked image*/
+    #image div {
+        position: relative;
+        margin: auto;
+        opacity: 0.4;
+        filter:alpha(opacity=50); 
+    }
+
+
+    /*All Pages*/
+
+    html, body {
+        height: 100%;
+        width: 100%;
+    }
+
+    body {
+        background-color: lightblue;
+        color: #333;
+        font-family: Sans-Serif;
+    }
+
+  .wrapper {
+        margin: 8px auto;
+        max-width: 956px;
+        min-width: 700px;
+        padding: 2.25%;
+    }
+
+    h1{
+        font-size: 29px;
+        text-align: center;
+    }
+
+    h2{
+        border-bottom: 2px solid #ccc;
+        font-size: 24px;
+        margin-bottom: 16px;
+    }
+
+    h3{
+        font-size: 18px;
+    }
+
+    p{
+        margin-bottom: 18px;
+    }
+
+    button {
+        padding: 2.01px 6px;
+        padding-left: 8px;
+        padding-right: 8px;
+        border-style: outset;
+        border-width: 2px;
+        border-color: black;
+        background-color: lightblue;
+    }
+
+    input[type="submit" i] {
+        padding: 2.01px 6px;
+        padding-left: 6px;
+        padding-right: 6px;
+        border-style: outset;
+        border-width: 2px;
+        border-color: black;
+        background-color: lightblue;
+    }
+
+    /*Product Profile*/
+
+    

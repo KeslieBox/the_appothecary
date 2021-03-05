@@ -1,15 +1,12 @@
 class ProductsController < ApplicationController
     get '/products' do  
         redirect_if_not_logged_in
- 
-        @products = Product.all
-        @product = Product.find_by(id: params[:id])
+        @products = current_user.products
         erb :"/products/index"
     end
  
     get '/products/new' do
-        @products = Product.all
-
+        redirect_if_not_logged_in
         erb :"/products/new"
     end
 
@@ -17,7 +14,6 @@ class ProductsController < ApplicationController
         redirect_if_not_logged_in
         
         product = current_user.products.create(params[:product])
-        # redirect_if_not_owner(product)
 
         if product.id
             redirect "/products/#{product.id}"
