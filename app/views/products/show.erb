@@ -1,3 +1,4 @@
+
 <h1>Product Profile</h1>
 <br>
     <h2>Category: <%=@product.category%><h2>
@@ -9,7 +10,7 @@
 
     <form action="/products/<%=@product.id%>" method="post">
         <input type="hidden" name="_method" value="delete">
-        <input type="submit" value="Delete Item" >
+        <input type="submit" value="Delete Product" >
     </form>
     <br>
     <a href="/products/<%=@product.id%>/edit">Edit Product</a>

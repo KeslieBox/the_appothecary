@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-    get '/users' do   
+    get '/users' do  
     end
     
     get '/signup' do
@@ -45,7 +45,7 @@ class UsersController < ApplicationController
             flash[:message] = "Logged in successfully"
             redirect "/users/#{user.id}"
         else 
-           @errors = ["Invalid login, please make sure your username and password are correct"]
+            @errors = ["Invalid login, please make sure your username and password are correct"]
             erb :"/users/login"
         end 
     end
@@ -54,5 +54,6 @@ class UsersController < ApplicationController
         session.clear
         redirect "/"
     end
+    
 
 end

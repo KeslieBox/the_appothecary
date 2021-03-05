@@ -1,12 +1,14 @@
+<%flash[:message] && flash[:message].each do |m|%>
+  <li><%=m%></li>
+<%end%>
+
+
+<br><br>
 <h1>Welcome to your <em>Appothecary</em>, <%= @user.username%>! ;) </h1>
 
-<%=flash[:message]%>
+  <ol>
+    <% @products.each do |product| %>
+      <li><a href="/products/<%=product.id%>"><%=product.name%><%=product.category%></a></li>
+    <%end%>
+  </ol>
 
-<a href="/products/new">Add a New Product</a>
-
-<ul>
-  <% @products.each do |product| %>
-    <li><a href="/products/<%=product.id%>"><%=product.name%></a></li>
-  <%end%>
-
-</ul>
