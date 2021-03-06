@@ -10,16 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_04_205546) do
+ActiveRecord::Schema.define(version: 2021_03_06_005754) do
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.integer "user_id"
+  end
+
+  create_table "categories_products", force: :cascade do |t|
+    t.integer "product_id"
+    t.integer "category_id"
+  end
 
   create_table "products", force: :cascade do |t|
     t.string "name"
-    t.string "category"
     t.integer "inventory"
     t.float "cost_of_good"
     t.float "retail_price"
     t.string "source"
     t.integer "user_id"
+    t.integer "category_id"
   end
 
   create_table "users", force: :cascade do |t|

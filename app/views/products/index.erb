@@ -3,6 +3,6 @@
 <h2>Products</h2>
     <ol>
     <% @products.each do |product| %>
-        <li><a href="/products/<%=product.id%>"><%=product.name.capitalize%> - <%=product.category%></a>
+        <li><a href="/products/<%=product.id%>"><%=product.name.capitalize%> - <%=product.category_id%></a>
     <%end%>
     </ol>

@@ -1,14 +1,17 @@
 <h2>Add a New Product</h2>
     <form action="/products" method="post">
         <p>Name <input type="text" id="product_name" name="product[name]"></p>
-        <%# Product type, need to either predetermine "types" or allow user to add and edit their own %>
-        <%# <p>Type <input type="text" id="type" name="type"></p> %>
+        <%# Product category, need to either predetermine "categories" or allow user to add and edit their own %>
         <p>
             Categories
-            <input type="radio" id="herb" name="product[category]" value="Herb"><label for="product[category]"> Herb</label>
-            <input type="radio" id="tincture" name="product[category]" value="Tincture"><label for="product[category]"> Tincture</label>
-            <input type="radio" id="product" name="product[category]" value="Product"><label for="product[category]"> Product</label>  
-            <input type="radio" id="other" name="product[category]" value="Other"><label for="product[category]"> Other</label>                      
+            <%@categories.each do |category|%>
+                <%binding.pry%>
+                <input type="checkbox" name="category[product_ids][]" id="<%=product.id%>" value="<%=product.id%>"><%=category.name%></input><br>
+            <%end%>
+            <%# <input type="checkbox" id="herb" name="product[category]" value="Herb"><label for="product[category]"> Herb</label> %>
+            <%# <input type="radio" id="tincture" name="product[category]" value="Tincture"><label for="product[category]"> Tincture</label> %>
+            <%# <input type="radio" id="product" name="product[category]" value="Product"><label for="product[category]"> Product</label>   %>
+            <%# <input type="radio" id="other" name="product[category]" value="Other"><label for="product[category]"> Other</label>                       %>
         </p>
         <p>Inventory (oz or item) <input type="text" id="product_inventory" name="product[inventory]"></p>
         <p>Source <input type="text" id="product_source" name="product[source]"></p>
