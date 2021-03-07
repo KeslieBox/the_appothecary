@@ -1,0 +1,11 @@
+
+<h2>Add a New Category</h2>
+    <form action="/categories" method="post">
+        <p>Name <input type="text" id="category_name" name="category[name]">
+           <div class="flash"> <%flash[:message] && flash[:message].each do |m| %>
+                <li><%=m%></li>
+            <%end%>
+            </div>
+        </p>
+        <p><input type="submit" value="Add Category"></p>
+    </form>

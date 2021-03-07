@@ -1,18 +1,13 @@
-
-<h1>Product Profile</h1>
-<br>
-    <h2>Category: <%=@product.categories%><h2>
-    <h2>Name: <%=@product.name%></h2>
-        <p>Current Inventory: <%=@product.inventory%><p>
-        <p>Source: <%=@product.source%><p>
-        <p>Cost of Good: <%=@product.cost_of_good%><p>
-        <p>Retail Price: <%=@product.retail_price%><p>
-    <br>
+<h2><b>Product Profile: <%=@product.name.capitalize%></h2>
+    <p>Current Inventory: <%=@product.inventory%><p>
+    <p>Source: <%=@product.source%><p>
+    <p>Cost of Good: <%=@product.cost_of_good%><p>
+    <p>Retail Price: <%=@product.retail_price%><p>
     <form action="/products/<%=@product.id%>" method="post">
         <input type="hidden" name="_method" value="delete">
-        <input type="submit" value=" Delete Product ">   <a href="/products/<%=@product.id%>/edit"><button>  Edit Product  </button></a>
-
-    </form><br>
+        <input type="submit" value=" Delete Product ">   
+    </form>
+    <a href="/products/<%=@product.id%>/edit"><button>  Edit Product  </button></a>
 
 
 

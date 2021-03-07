@@ -1,0 +1,8 @@
+
+<h2>Categories</h2>
+    <ol>
+    <% @categories.each do |category| %>
+    <%# need to figure out how to associate product w category to only select the the category that matches %>
+        <li><a href="/categories/<%=category.id%>"><%=category.name.capitalize%></a></li>
+    <%end%>
+    </ol>

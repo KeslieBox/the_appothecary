@@ -1,8 +1,7 @@
-
-
 <h2>Products</h2>
     <ol>
     <% @products.each do |product| %>
-        <li><a href="/products/<%=product.id%>"><%=product.name.capitalize%> - <%=product.category_id%></a>
-    <%end%>
+    <%# need to figure out how to associate product w category to only select the the category that matches %>
+        <li><a href="/products/<%=product.id%>"><%=product.name.capitalize%></a>
+    <%end%> 
     </ol>

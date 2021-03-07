@@ -2,21 +2,25 @@ class ProductsController < ApplicationController
     get '/products' do  
         redirect_if_not_logged_in
         @products = current_user.products
+        @categories = current_user.categories
+
         erb :"/products/index"
     end
  
     get '/products/new' do
         redirect_if_not_logged_in
+        @products = current_user.products
         @categories = current_user.categories
         erb :"/products/new"
     end
 
     post '/products' do
         redirect_if_not_logged_in
-        
         product = current_user.products.create(params[:product])
+        category = current_user.categories.create(params[:category])
+        categories_products = current_user.categories_products.create(params[:categories_products])
 
-        if product.id
+        if current_user.products.find_by(name: params[:product][:name])
             redirect "/products/#{product.id}"
         else  
             flash[:message] = product.errors.full_messages  
@@ -28,12 +32,13 @@ class ProductsController < ApplicationController
         redirect_if_not_logged_in
         @product = Product.find_by(id: params[:id])
         @category = Category.find_by(id: params[:id])
-        binding.pry
+        @categories = current_user.categories
 
-        # redirect_if_not_owner(@product)
-        if !@product
-            redirect "/products"
+        @categories.each do |category|
         end
+        # if !@product || !@category
+        #     redirect "/products"
+        # end
 
         erb :"/products/show"
     end
@@ -42,7 +47,13 @@ class ProductsController < ApplicationController
         redirect_if_not_logged_in
 
         @product = Product.find_by(id: params[:id])
-        @products = Product.all
+        @products = current_user.products
+        @category = Category.find_by(id: params[:id])
+        @categories = current_user.categories
+
+        if !@product 
+            redirect "/products"
+        end
 
         erb :"/products/edit"
     end
@@ -50,7 +61,9 @@ class ProductsController < ApplicationController
     patch '/products/:id' do
         redirect_if_not_logged_in
         @product = Product.find_by(id: params[:id])
+        # @category = Category.find_by(id: params[:id])
         @product.update(params[:product])
+        # @category.update(params[:category])
       
         erb :"/products/show"        
     end
