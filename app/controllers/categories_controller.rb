@@ -15,7 +15,6 @@ class CategoriesController < ApplicationController
 
     post '/categories' do
         redirect_if_not_logged_in
-        # category = current_user.categories.create(params[:category])
         # if category name does already exists in user's categories and is not nil redirect to /categories/new
         # if current_user.categories.each.detect do |category| category.name == params[:category][:name]}
         if current_user.categories.find_by(name: params[:category][:name])
@@ -24,6 +23,7 @@ class CategoriesController < ApplicationController
         # else if it doesnt exist, redirect to categories to see new category there
         else
             category = current_user.categories.create(params[:category])
+            categories_product.category_id = category.id
             redirect "/categories"
         end
     end
@@ -55,6 +55,7 @@ class CategoriesController < ApplicationController
         redirect_if_not_logged_in
         @category = Category.find_by(id: params[:id])
         @category.update(params[:category])
+        @products = current_user.products
       
         erb :"/categories/show"        
     end

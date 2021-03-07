@@ -15,10 +15,10 @@ class ProductsController < ApplicationController
     end
 
     post '/products' do
+
         redirect_if_not_logged_in
         product = current_user.products.create(params[:product])
-        category = current_user.categories.create(params[:category])
-        categories_products = current_user.categories_products.create(params[:categories_products])
+        categories_product.product_id = product.id
 
         if current_user.products.find_by(name: params[:product][:name])
             redirect "/products/#{product.id}"

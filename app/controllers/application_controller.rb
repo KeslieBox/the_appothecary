@@ -20,6 +20,10 @@ class ApplicationController < Sinatra::Base
       @user = User.find_by(id: session[:user_id])
     end
 
+    def categories_product
+      @categories_product = CategoriesProduct.find_by(id: session[:user_id])
+    end
+
     def logged_in?
       !!session[:user_id]
     end  
