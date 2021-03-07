@@ -23,7 +23,9 @@ class CategoriesController < ApplicationController
         # else if it doesnt exist, redirect to categories to see new category there
         else
             category = current_user.categories.create(params[:category])
-            categories_product.category_id = category.id
+            @categories_product = CategoriesProduct.create
+            @categories_product.category_id = category.id
+            @categories_product.save
             redirect "/categories"
         end
     end
@@ -31,9 +33,15 @@ class CategoriesController < ApplicationController
     get '/categories/:id' do
         redirect_if_not_logged_in
         # need to find products that belong to category...products with current category id
-        @product = Product.find_by(id: params[:id])
         @category = Category.find_by(id: params[:id])
-        @products = current_user.products
+        categories_product = CategoriesProduct.find_by(category_id: params[:id])
+        # @products = Product.find_by(id: categories_product.product_id)
+        
+
+        # current_user.products.each.detect do |product|
+        #     binding.pry
+        #     product.id 
+        # end
 
         # if !@product || !@category
         #     redirect "/categories"

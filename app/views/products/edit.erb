@@ -1,4 +1,5 @@
 <h2>Edit your product here!</h2>
+<%# need to add flash messages %>
 <form action="/products/<%=@product.id%>" method="post">
 <input type="hidden" name="_method" value="patch">
     <p>Name <input type="text" id="product_name" name="product[name]" value="<%=@product.name%>"></p>
@@ -7,12 +8,15 @@
     <p>Cost of Good (by oz or item) <input type="text" id="product_cost_of_good" name="product[cost_of_good]" value="<%=@product.cost_of_good%>"></p>
     <p>Retail Price <input type="text" id="product_retail_price" name="product[retail_price]" value="<%=@product.retail_price%>"></p>
     
+    <%# need to add: <p>Currently Associated Categories</p> %>
+    
+
     <p>Add New Category and/or select an existing one below:</p>
     <p>New Category <input type="text" id="category_name" name="category[name]"></p>
         
     <p>Existing Categories:</p>
         <%@categories.each do |category|%>
-           <input type="checkbox" name="category[id]" id="<%=category.id%>" value="<%=category.id%>"><%=category.name.capitalize%></input><br>
+           <input type="checkbox" name="category_ids[]" id="<%=category.id%>" value="<%=category.id%>"><%=category.name.capitalize%></input><br>
         <%end%>
         <%# <input type="checkbox" id="herb" name="product[category]" value="Herb"><label for="product[category]"> Herb</label> %>
         <%# <input type="radio" id="tincture" name="product[category]" value="Tincture"><label for="product[category]"> Tincture</label> %>

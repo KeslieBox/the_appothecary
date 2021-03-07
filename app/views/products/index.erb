@@ -1,7 +1,12 @@
 <h2>Products</h2>
     <ol>
     <% @products.each do |product| %>
-    <%# need to figure out how to associate product w category to only select the the category that matches %>
-        <li><a href="/products/<%=product.id%>"><%=product.name.capitalize%></a>
+        <%# find the cat_prod object associated with the product %>
+        <%# should this be current_user.categories_products...? %>
+        <%categories_product = CategoriesProduct.find_by(product_id: product.id)%>    
+        <%# find the category object who's id is the same as the cat_prod category id %>
+        <%binding.pry%>
+        <%category = current_user.categories.find_by(id: categories_product.category_id)%>
+        <li><a href="/products/<%=product.id%>"><%=product.name.capitalize%> - <%=category.name.capitalize%></a>
     <%end%> 
     </ol>
