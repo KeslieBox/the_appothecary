@@ -2,9 +2,11 @@
 
 <h3>Please sign up to create an account</h3>
 
-<% @errors && @errors.each do |m| %>
-  <li><%=m%></li>
-<%end%>
+<div class="flash"> 
+    <%@errors && @errors.each do |m|%>
+      <li><%=m%></li>
+    <%end%> 
+</div>
 <br>
 
 <form action="/signup" method="post">

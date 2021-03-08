@@ -1,8 +1,11 @@
 <h2>Please login to access your account</h2>
 
-<%@errors && @errors.each do |m|%>
-    <li><%=m%></li>
-<%end%>
+<div class="flash"> 
+    <%@errors && @errors.each do |m|%>
+      <li><%=m%></li>
+    <%end%> 
+</div>
+
 <br>
 
 <form action="/login" method="post">

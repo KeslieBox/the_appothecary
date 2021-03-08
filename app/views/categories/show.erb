@@ -1,6 +1,6 @@
 
 <h2>Category Profile - <%=@category.name.capitalize%></h2>
-    <%# want to iterate through and display all products in the category %>
+    <%# want to display all products in the category here %>
     <ol>
     <%@products.each do |product|%>
         <li><%=product.name.capitalize%> - <%=product.inventory%></li>
@@ -11,6 +11,11 @@
         <input type="hidden" name="_method" value="delete">
         <input type="submit" value=" Delete Category ">   
     </form> 
+    <div class="flash"> 
+        <%@errors && @errors.each do |m|%>
+        <li><%=m%></li>
+        <%end%> 
+    </div>
     <a href="/categories/<%=@category.id%>/edit"><button>  Edit Category  </button></a>
 
 

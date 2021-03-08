@@ -1,8 +1,7 @@
 <h2>
-Product Profile: <%=@product.name.capitalize%> 
+Product Profile: <%=@product.name.capitalize%> </h2>
 <br>
-Category: <%=@category.name.capitalize%>
-</h2>
+<h4>Categories:<%@categories.each do |category|%> <%=category.name.capitalize%>, <%end%></h4>
     <p>Current Inventory: <%=@product.inventory%><p>
     <p>Source: <%=@product.source%><p>
     <p>Cost of Good: <%=@product.cost_of_good%><p>

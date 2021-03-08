@@ -1,4 +1,9 @@
 <h2>Add a New Product</h2>
+<div class="flash"> 
+    <%flash[:message] && flash[:message].each do |m|%>
+      <li><%=m%></li>
+    <%end%> 
+</div>
     <form action="/products" method="post">
         <p>Name <input type="text" id="product_name" name="product[name]"></p>
         <%# Product category, need to either predetermine "categories" or allow user to add and edit their own %>
@@ -6,18 +11,12 @@
         <p>Source <input type="text" id="product_source" name="product[source]"></p>
         <p>Cost of Good (by oz or item) <input type="text" id="product_cost_of_good" name="product[cost_of_good]"></p>
         <p>Retail Price <input type="text" id="product_retail_price" name="product[retail_price]"></p>
-        <p>    
-        <p>Add a New Category or select an existing one below:</p>
-        <%# <p>New Category <input type="text" id="category_name" name="category[name]"></p> %>
            
-        <p>Existing Categories:</P>
+        <p>Choose at least one corresponding category:</P>
+        <p> If none yet exist, <a href="/categories/new"> please add a new category here </a>
             <%@categories.each do |category|%>
-                <input type="checkbox" name="category[id]" id="<%=category.id%>" value="<%=category.id%>"><%=category.name.capitalize%></input><br>
+                <input type="checkbox" name="product[category_ids][]" id="<%=category.id%>" value="<%=category.id%>"><%=category.name.capitalize%></input><br>
             <%end%>
-            <%# <input type="checkbox" id="herb" name="product[category]" value="Herb"><label for="product[category]"> Herb</label> %>
-            <%# <input type="radio" id="tincture" name="product[category]" value="Tincture"><label for="product[category]"> Tincture</label> %>
-            <%# <input type="radio" id="product" name="product[category]" value="Product"><label for="product[category]"> Product</label>   %>
-            <%# <input type="radio" id="other" name="product[category]" value="Other"><label for="product[category]"> Other</label>                       %>
         </p> 
        
         <p><input type="submit" value="Add Product"></p>
