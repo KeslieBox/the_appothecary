@@ -14,10 +14,45 @@ class ProductsController < ApplicationController
     end
 
     #this is working but with no option to add new category 
+    # post '/products' do
+    #     redirect_if_not_logged_in
+    #     params[:product][:name] = params[:product][:name].capitalize
+    #     product = current_user.products.create(params[:product])
+        
+    #     if !product.valid?
+    #         flash[:message] = product.errors.full_messages  
+    #         redirect "/products/new"
+    #     else
+    #         flash[:success] = ["Your new product was added successfully!"]
+    #         redirect "/products/#{product.id}"
+    #     end
+    # end
+
+    #trying to create an option to add new category at the same time you add a new product
     post '/products' do
         redirect_if_not_logged_in
         params[:product][:name] = params[:product][:name].capitalize
         product = current_user.products.create(params[:product])
+
+        category = Category.find_or_create_by(name: params[:category][:name].capitalize)
+        if !category.valid? && !params["category"]["name"].empty?
+            # flash[:message] = category.errors.full_messages
+            # redirect "/products/new"
+            @errors = category.errors.full_messages
+            erb :"/products/new"
+        elsif category && !params["category"]["name"].empty?
+            @product.update(params[:product])
+            # flash[:success] = ["Your category was added successfully! See checkboxes below to add the new category to this product", 'Finish editing your product and click "Edit Product" to submit your changes']
+            # redirect "/products/new"
+            @success = ["Your category was added successfully! See checkboxes below to add the new category to this product", 'Finish editing your product and click "Edit Product" to submit your changes']
+            erb :"/products/new"
+        else
+            @product.update(params[:product])
+            @product_categories = @product.categories
+            # binding.pry
+            flash[:message] = ["Your product was updated successfully!"]
+            redirect "/products/#{@product.id}" 
+        end
         
         if !product.valid?
             flash[:message] = product.errors.full_messages  
@@ -27,8 +62,6 @@ class ProductsController < ApplicationController
             redirect "/products/#{product.id}"
         end
     end
-
-    
  
     get '/products/:id' do
         redirect_if_not_logged_in
@@ -74,28 +107,22 @@ class ProductsController < ApplicationController
     patch '/products/:id' do
         redirect_if_not_logged_in
         @product = current_user.products.find_by(id: params[:id])
-        product_new_category
-        # @product.update(params[:product])
-    
-        # if !params["category"]["name"].empty?
-            # category = Category.find_or_create_by(name: params[:category][:name].capitalize)
-            # # binding.pry
-            # if !category.valid? && !params["category"]["name"].empty?
-            #     flash[:message] = category.errors.full_messages
-            #     redirect "/products/#{@product.id}/edit"
-            # elsif category && !params["category"]["name"].empty?
-            #     @product.update(params[:product])
-            #     flash[:success] = ["Your category was added successfully! See checkboxes below to add the new category to this product", 'Finish editing your product and click "Edit Product" to submit your changes']
-            #     redirect "/products/#{@product.id}/edit"
-            # else
-            #     @product.update(params[:product])
-            #     @product_categories = @product.categories
-            #     # binding.pry
-            #     flash[:message] = ["Your product was updated successfully!"]
-            #     redirect "/products/#{@product.id}" 
-            #     # erb :"/products/show"
-            # end
-        # end
+        
+        category = Category.find_or_create_by(name: params[:category][:name].capitalize)
+        if !category.valid? && !params["category"]["name"].empty?
+            flash[:message] = category.errors.full_messages
+            redirect "/products/#{@product.id}/edit"
+        elsif category && !params["category"]["name"].empty?
+            @product.update(params[:product])
+            flash[:success] = ["Your category was added successfully! See checkboxes below to add the new category to this product", 'Finish editing your product and click "Edit Product" to submit your changes']
+            redirect "/products/#{@product.id}/edit"
+        else
+            @product.update(params[:product])
+            @product_categories = @product.categories
+            # binding.pry
+            flash[:message] = ["Your product was updated successfully!"]
+            redirect "/products/#{@product.id}" 
+        end
         # redirect "/products/#{@product.id}"     
     end
 
