@@ -13,9 +13,9 @@ class ProductsController < ApplicationController
         erb :"/products/new"
     end
 
+    #this is working but with no option to add new category 
     post '/products' do
         redirect_if_not_logged_in
-
         params[:product][:name] = params[:product][:name].capitalize
         product = current_user.products.create(params[:product])
         
@@ -23,10 +23,12 @@ class ProductsController < ApplicationController
             flash[:message] = product.errors.full_messages  
             redirect "/products/new"
         else
-            flash[:message] = ["Your new product was added successfully!"]
+            flash[:success] = ["Your new product was added successfully!"]
             redirect "/products/#{product.id}"
         end
     end
+
+    
  
     get '/products/:id' do
         redirect_if_not_logged_in
@@ -56,31 +58,45 @@ class ProductsController < ApplicationController
 
         erb :"/products/edit"
     end
+# this is working with no option to add new category in edit
+    # patch '/products/:id' do
+    #     redirect_if_not_logged_in
+    #     @product = current_user.products.find_by(id: params[:id])
+    #     @product.update(params[:product])
+    #     # binding.pry
+    #     # @category = current_user.categories.find_by(id: params[:product][:category_ids])
+    #     # @category.update(params[:category])
+      
+    #     redirect "/products/#{@product.id}"      
+    # end
 
+# trying to create option to add new category from edit page
     patch '/products/:id' do
         redirect_if_not_logged_in
         @product = current_user.products.find_by(id: params[:id])
-        @product.update(params[:product])
-        # binding.pry
-        # @category = current_user.categories.find_by(id: params[:product][:category_ids])
-        # @category.update(params[:category])
-        # binding.pry
-        if !params["category"]["name"].empty?
-            category = Category.find_or_create_by(name: params[:category][:name].capitalize)
-        end
-        redirect "/products/#{@product.id}"     
-        
-#         # if !params[:category][:name].empty?
-#         category = Category.find_or_create_by(name: params[:category][:name].capitalize)
-#         if !category
-#             flash[:message] = category.errors.full_messages
-#             redirect "/products/#{@product.id}"
-#         else
-#             # same issue as get "/categories" above, how do i only render it in the view if it is associated with current user       
-#             flash[:message] = ["Your new category was added successfully!"]
-#             redirect "/categories"
-#         end
-# # end
+        product_new_category
+        # @product.update(params[:product])
+    
+        # if !params["category"]["name"].empty?
+            # category = Category.find_or_create_by(name: params[:category][:name].capitalize)
+            # # binding.pry
+            # if !category.valid? && !params["category"]["name"].empty?
+            #     flash[:message] = category.errors.full_messages
+            #     redirect "/products/#{@product.id}/edit"
+            # elsif category && !params["category"]["name"].empty?
+            #     @product.update(params[:product])
+            #     flash[:success] = ["Your category was added successfully! See checkboxes below to add the new category to this product", 'Finish editing your product and click "Edit Product" to submit your changes']
+            #     redirect "/products/#{@product.id}/edit"
+            # else
+            #     @product.update(params[:product])
+            #     @product_categories = @product.categories
+            #     # binding.pry
+            #     flash[:message] = ["Your product was updated successfully!"]
+            #     redirect "/products/#{@product.id}" 
+            #     # erb :"/products/show"
+            # end
+        # end
+        # redirect "/products/#{@product.id}"     
     end
 
     delete '/products/:id' do

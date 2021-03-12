@@ -13,7 +13,17 @@
     <p>Current Categories:<%@product_categories.each do |category|%> <%=category.name%>, <%end%><p>
     <p>Add New Category and/or select an existing one below:</p>
     <p>New Category <input type="text" id="category_name" name="category[name]"></p>
+
+    <div class="flash"> 
+        <%flash[:message] && flash[:message].each do |m|%>
+        <li><%=m%></li>
+        <%end%> 
         
+        <%flash[:success] && flash[:success].each do |m|%>
+        <li><%=m%></li>
+        <%end%> 
+    </div>   
+    
     <p>Other Categories:</p>
         <%@categories.each do |category|%>
            <input type="checkbox" name="product[category_ids][]" id="<%=category.id%>" value="<%=category.id%>" <%='checked' if @product.categories.include?(category) %>><%=category.name%></input><br>
