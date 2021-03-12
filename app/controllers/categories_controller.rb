@@ -2,7 +2,6 @@ class CategoriesController < ApplicationController
     get '/categories' do  
         redirect_if_not_logged_in
         @categories = current_user.categories.uniq
-        # @categories = Category.all
         
         erb :"/categories/index"
     end
@@ -14,9 +13,7 @@ class CategoriesController < ApplicationController
 
     post '/categories' do
         redirect_if_not_logged_in
-        categories = Category.all
-        #make sure capitalize doesn't need downcase
-        
+        categories = Category.all        
         category = Category.find_or_create_by(name: params[:category][:name].capitalize)
 
         if !category
@@ -24,27 +21,21 @@ class CategoriesController < ApplicationController
             redirect "/categories/new"
         else
             # same issue as get "/categories" above, how do i only render it in the view if it is associated with current user       
-            flash[:message] = ["Your new category was added successfully!"]
+            flash[:message] = ["Your new category was added successfully!", "Please add some new products to your category to see them here!"]
             redirect "/categories"
         end
     end
  
     get '/categories/:id' do
         redirect_if_not_logged_in
-        # @category = Category.find_by(id: params[:id])
         @category = current_user.categories.find_by(id: params[:id])
-        # binding.pry
-        if !@category || @category.products.empty?
+
+        if !@category
+            flash[:message] = ["Whoops that category doesn't exist yet!"]
             redirect "/categories"
         else
-        # elsif @category.products
-            # how to access all the products for a category for THIS user??
-            # @products = @category.products.find_by(user: current_user)
-            @products = @category.products
-
-            # current_user.products.each.select do |product|
-                # select all products that belong to this category    
-            # end 
+            @products = @category.products.where(user: current_user)
+           
             erb :"/categories/show"
         end    
     end

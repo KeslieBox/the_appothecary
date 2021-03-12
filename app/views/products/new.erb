@@ -17,21 +17,24 @@
         <p>New Category <input type="text" id="category_name" name="category[name]"></p>
 
         <div class="flash"> 
-            <%@errors && @errors.each do |m|%>
+            <%flash[:message] && flash[:message].each do |m|%>
             <li><%=m%></li>
             <%end%> 
             
-            <%@success && @success.each do |m|%>
+            <%flash[:success] && flash[:success].each do |m|%>
             <li><%=m%></li>
             <%end%> 
+
+             <%@errors && @errors.each do |m|%>
+            <li><%=m%></li>
+            <%end%>  
         </div>   
 
-        <p> If the category you're looking for is missing, <a href="/categories/new"> please add a new category here </a><br><br>
             <%@categories.each do |category|%>
                 <input type="checkbox" name="product[category_ids][]" id="<%=category.id%>" value="<%=category.id%>"><%=category.name%></input><br>
             <%end%>
         </p> 
        
-        <p><input type="submit" value="Add Product"></p>
+        <p><input type="submit" value="Create Product"></p>
     
     </form>
