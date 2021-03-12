@@ -1,22 +1,5 @@
 <h2>Add a New Product</h2>
-<div class="flash"> 
-    <%flash[:message] && flash[:message].each do |m|%>
-      <li><%=m%></li>
-    <%end%> 
-</div>
-    <form action="/products" method="post">
-        <p>Name <input type="text" id="product_name" name="product[name]"></p>
-        <%# Product category, need to either predetermine "categories" or allow user to add and edit their own %>
-        <p>Inventory (oz or item) <input type="text" id="product_inventory" name="product[inventory]"></p>
-        <p>Source <input type="text" id="product_source" name="product[source]"></p>
-        <p>Cost of Good (by oz or item) <input type="text" id="product_cost_of_good" name="product[cost_of_good]"></p>
-        <p>Retail Price <input type="text" id="product_retail_price" name="product[retail_price]"></p>
-           
-        <p>Choose at least one corresponding category:</P>
-        <p>Add New Category and/or select an existing one below:</p>
-        <p>New Category <input type="text" id="category_name" name="category[name]"></p>
-
-        <div class="flash"> 
+     <div class="flash"> 
             <%flash[:message] && flash[:message].each do |m|%>
             <li><%=m%></li>
             <%end%> 
@@ -28,10 +11,20 @@
              <%@errors && @errors.each do |m|%>
             <li><%=m%></li>
             <%end%>  
-        </div>   
+        </div>  
+    <form action="/products" method="post">
+        <p>Name <input type="text" id="product_name" name="product[name]"></p>
+        <%# Product category, need to either predetermine "categories" or allow user to add and edit their own %>
+        <p>Inventory (oz or item) <input type="text" id="product_inventory" name="product[inventory]"></p>
+        <p>Source <input type="text" id="product_source" name="product[source]"></p>
+        <p>Cost of Good (by oz or item) <input type="text" id="product_cost_of_good" name="product[cost_of_good]"></p>
+        <p>Retail Price <input type="text" id="product_retail_price" name="product[retail_price]"></p>
+        
+        <p>New Category <input type="text" id="category_name" name="category[name]"></p>
 
+        <p>Choose at least one corresponding category:</P>
             <%@categories.each do |category|%>
-                <input type="checkbox" name="product[category_ids][]" id="<%=category.id%>" value="<%=category.id%>"><%=category.name%></input><br>
+                <input type="checkbox" name="product[category_ids][]" id="<%=category.id%>" value="<%=category.id%>"<%='checked' if @product && @product.categories.include?(category) %>><%=category.name%></input><br>
             <%end%>
         </p> 
        

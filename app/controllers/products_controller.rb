@@ -33,7 +33,7 @@ class ProductsController < ApplicationController
         redirect_if_not_logged_in
         @categories = Category.all
         params[:product][:name] = params[:product][:name].capitalize
-        product = current_user.products.create(params[:product])
+        @product = current_user.products.create(params[:product])
 
         category = Category.find_or_create_by(name: params[:category][:name].capitalize)
         if !category.valid? && !params["category"]["name"].empty? 
@@ -43,7 +43,7 @@ class ProductsController < ApplicationController
             erb :"/products/new"
         elsif category && !params["category"]["name"].empty?
             # @product.update(params[:product])
-            flash[:success] = ["Your category was added successfully! See checkboxes below to add the new category to this product", "Finish creating your product and click \"Create Product\" when you\'re done"]
+            flash[:success] = ["Your category was added successfully!", "See checkboxes below to add the new category to this product", "Finish creating your product and click \"Create Product\" when you\'re done!"]
             redirect "/products/new"
         end
         
@@ -61,7 +61,7 @@ class ProductsController < ApplicationController
         @product = current_user.products.find_by(id: params[:id])
 
         if !@product 
-            flash[:message] = ["Whoops! That product page doesn't exist!"]
+            flash[:message] = ["Whoops! That product doesn't exist!"]
             redirect "/products"
         else
             @categories = @product.categories
@@ -107,7 +107,7 @@ class ProductsController < ApplicationController
             redirect "/products/#{@product.id}/edit"
         elsif category && !params["category"]["name"].empty?
             @product.update(params[:product])
-            flash[:success] = ["Your category was added successfully! See checkboxes below to add the new category to this product", 'Finish editing your product and click "Edit Product" to submit your changes']
+            flash[:success] = ["Your category was added successfully!", "See checkboxes below to add the new category to this product", 'Finish editing your product and click "Edit Product" to submit your changes']
             redirect "/products/#{@product.id}/edit"
         else
             @product.update(params[:product])

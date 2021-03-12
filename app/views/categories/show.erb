@@ -2,7 +2,6 @@
 <h2>Category Profile - <%=@category.name%></h2>
     <%# want to display all products in the category here %>
     <ol>
-
     <%@products.each do |product|%>
         <li><a href="/products/<%=product.id%>"> <%=product.name%> - <%=product.inventory%></a></li>
     <%end%>
