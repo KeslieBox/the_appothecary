@@ -1,8 +1,12 @@
+<div class="flash"> 
+    <%flash[:message] && flash[:message].each do |m|%>
+      <li><%=m%></li>
+    <%end%> 
+</div><br>
 
 <h2>Categories</h2>
     <ol>
     <% @categories.each do |category| %>
-    <%# need to figure out how to associate product w category to only select the the category that matches %>
-        <li><a href="/categories/<%=category.id%>"><%=category.name.capitalize%></a></li>
+        <li><a href="/categories/<%=category.id%>"><%=category.name%></a></li>
     <%end%>
     </ol>

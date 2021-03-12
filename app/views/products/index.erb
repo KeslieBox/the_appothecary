@@ -1,12 +1,12 @@
 <div class="flash"> 
-    <%flash[:message] && flash[:message].each do |m| %>
-        <li><%=m%></li>
-    <%end%>
-</div>
+    <%flash[:message] && flash[:message].each do |m|%>
+      <li><%=m%></li>
+    <%end%> 
+</div><br>
 
 <h2>Products</h2>
     <ol>
     <% @products.each do |product| %>
-        <li><a href="/products/<%=product.id%>"><%=product.name.capitalize%></a>
+        <li><a href="/products/<%=product.id%>"><%=product.name%></a>
     <%end%> 
     </ol>

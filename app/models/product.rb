@@ -5,6 +5,7 @@ class Product < ActiveRecord::Base
     has_many :categories, through: :categories_products
     # has_and_belongs_to_many :categories
     validates :name, presence: true
+    validates_uniqueness_of :name
 end
 
 

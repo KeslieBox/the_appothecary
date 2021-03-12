@@ -1,53 +1,61 @@
 class CategoriesController < ApplicationController
     get '/categories' do  
         redirect_if_not_logged_in
-        @categories = Category.all
+        @categories = current_user.categories.uniq
+        # @categories = Category.all
         
         erb :"/categories/index"
     end
  
     get '/categories/new' do
         redirect_if_not_logged_in
-        @categories = current_user.categories
         erb :"/categories/new"
     end
 
     post '/categories' do
         redirect_if_not_logged_in
-       
-        if Category.find_by(name: params[:category][:name]) || Category.find_by(name: params[:category][:name].capitalize) || Category.find_by(name: params[:category][:name].upcase)
-            flash[:message] = ["Please enter a category that doesn't already exist"]
+        categories = Category.all
+        #make sure capitalize doesn't need downcase
+        
+        category = Category.find_or_create_by(name: params[:category][:name].capitalize)
+
+        if !category
+            flash[:message] = category.errors.full_messages
             redirect "/categories/new"
-        # else if it doesnt exist, redirect to categories to see new category there
         else
-            Category.find_or_create_by(name: params[:category][:name])
+            # same issue as get "/categories" above, how do i only render it in the view if it is associated with current user       
+            flash[:message] = ["Your new category was added successfully!"]
             redirect "/categories"
         end
     end
  
     get '/categories/:id' do
         redirect_if_not_logged_in
-        @category = Category.find_by(id: params[:id])
-
-        if !@category
+        # @category = Category.find_by(id: params[:id])
+        @category = current_user.categories.find_by(id: params[:id])
+        # binding.pry
+        if !@category || @category.products.empty?
             redirect "/categories"
         else
-            # how to access all the products for a category??
+        # elsif @category.products
+            # how to access all the products for a category for THIS user??
+            # @products = @category.products.find_by(user: current_user)
             @products = @category.products
+
             # current_user.products.each.select do |product|
                 # select all products that belong to this category    
             # end 
+            erb :"/categories/show"
         end    
-
-        erb :"/categories/show"
     end
     
     get '/categories/:id/edit' do
         redirect_if_not_logged_in
-
         @category = current_user.categories.find_by(id: params[:id])
-        @categories = current_user.categories
-
+        if !@category 
+            flash[:message] = ["Whoops! That category doesn't exist!"]
+            redirect "/products"
+        end
         erb :"/categories/edit"
     end
 
@@ -55,7 +63,7 @@ class CategoriesController < ApplicationController
         redirect_if_not_logged_in
         @category = current_user.categories.find_by(id: params[:id])
         @category.update(params[:category])
-        @products = current_user.products
+        @products = @category.products
       
         erb :"/categories/show"        
     end
@@ -63,15 +71,12 @@ class CategoriesController < ApplicationController
     delete '/categories/:id' do
         redirect_if_not_logged_in
         @category = current_user.categories.find_by(id: params[:id])
-        # need to make sure this is only accesible to owner of products in this category
-        binding.pry
-        # if @category
+        if @category
             @category.delete
             redirect "/categories"
-        # else
-        #     # set up errors
-        #     @errors = ["Invalid option"]
-        #     erb :"/categories/show"
-        # end
+        else
+            @errors = ["Invalid option"]
+            erb :"/categories/show"
+        end
     end
 end

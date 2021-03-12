@@ -2,68 +2,55 @@ class ProductsController < ApplicationController
     get '/products' do 
         redirect_if_not_logged_in
         @products = current_user.products
-        # should these go here instead of in the view? if so, how to i access the product id?
-        # find the cat_prod object associated with the product
-        # should this be current_user.categories_products...?
-        # @categories_product = CategoriesProduct.find_by(product_id: product.id)
-        # find the category object who's id is the same as the cat_prod category id
-        # @category = current_user.categories.find_by(id: categories_product.category_id)
+       
         erb :"/products/index"
     end
  
     get '/products/new' do
         redirect_if_not_logged_in
         @products = current_user.products
-        @categories = current_user.categories
+        @categories = Category.all
         erb :"/products/new"
     end
 
     post '/products' do
         redirect_if_not_logged_in
-        product = current_user.products.create(params[:product])
 
-        if current_user.products.find_by(name: params[:product][:name])
-            redirect "/products/#{product.id}"
-        else  
+        params[:product][:name] = params[:product][:name].capitalize
+        product = current_user.products.create(params[:product])
+        
+        if !product.valid?
             flash[:message] = product.errors.full_messages  
             redirect "/products/new"
+        else
+            flash[:message] = ["Your new product was added successfully!"]
+            redirect "/products/#{product.id}"
         end
-
     end
  
     get '/products/:id' do
         redirect_if_not_logged_in
         @product = current_user.products.find_by(id: params[:id])
+
         if !@product 
-            flash[:message] = ["Please select a product that exists"]
+            flash[:message] = ["Whoops! That product page doesn't exist!"]
             redirect "/products"
         else
-            @category = current_user.categories.find_by(id: categories_product.category_id)
+            @categories = @product.categories
+            @category = current_user.categories.find_by(id: params[:id])
             erb :"/products/show"
         end
-        
-        # need to figure out how to associate categories
-        # @categories = current_user.categories_product
-        # Category.find_by()...cat_prod_id: params[:id]??
-        # categories where cat_product id = category id
-        # if CategoriesProducts.all.each.detect {|cat_prod| cat_prod.id == category.id}
-        # User.joins(products: {categories_product: :category})
-        # @categories.each do |category|
-        # end
-        
-        
     end
     
     get '/products/:id/edit' do
         redirect_if_not_logged_in
-        # need to figure out how to associate categories and make instance variable to access in view
-        @product =  current_user.products.find_by(id: params[:id])
-
+        @product = current_user.products.find_by(id: params[:id])
         @products = current_user.products
-        @category = current_user.categories.find_by(id: params[:id])
-        @categories = current_user.categories
+        @categories = Category.all
+        @product_categories = @product.categories
 
         if !@product 
+            flash[:message] = ["Whoops! That product doesn't exist!"]
             redirect "/products"
         end
 
@@ -72,12 +59,28 @@ class ProductsController < ApplicationController
 
     patch '/products/:id' do
         redirect_if_not_logged_in
-        @product =  current_user.products.find_by(id: params[:id])
-        # @category = Category.find_by(id: params[:id])
+        @product = current_user.products.find_by(id: params[:id])
         @product.update(params[:product])
+        # binding.pry
+        # @category = current_user.categories.find_by(id: params[:product][:category_ids])
         # @category.update(params[:category])
-      
-        erb :"/products/show"        
+        # binding.pry
+        if !params["category"]["name"].empty?
+            category = Category.find_or_create_by(name: params[:category][:name].capitalize)
+        end
+        redirect "/products/#{@product.id}"     
+        
+#         # if !params[:category][:name].empty?
+#         category = Category.find_or_create_by(name: params[:category][:name].capitalize)
+#         if !category
+#             flash[:message] = category.errors.full_messages
+#             redirect "/products/#{@product.id}"
+#         else
+#             # same issue as get "/categories" above, how do i only render it in the view if it is associated with current user       
+#             flash[:message] = ["Your new category was added successfully!"]
+#             redirect "/categories"
+#         end
+# # end
     end
 
     delete '/products/:id' do

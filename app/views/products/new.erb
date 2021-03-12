@@ -13,9 +13,9 @@
         <p>Retail Price <input type="text" id="product_retail_price" name="product[retail_price]"></p>
            
         <p>Choose at least one corresponding category:</P>
-        <p> If none yet exist, <a href="/categories/new"> please add a new category here </a>
+        <p> If the category you're looking for is missing, <a href="/categories/new"> please add a new category here </a><br><br>
             <%@categories.each do |category|%>
-                <input type="checkbox" name="product[category_ids][]" id="<%=category.id%>" value="<%=category.id%>"><%=category.name.capitalize%></input><br>
+                <input type="checkbox" name="product[category_ids][]" id="<%=category.id%>" value="<%=category.id%>"><%=category.name%></input><br>
             <%end%>
         </p> 
        

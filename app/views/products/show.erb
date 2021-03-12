@@ -1,7 +1,12 @@
-<h2>
-Product Profile: <%=@product.name.capitalize%> </h2>
+<div class="flash"> 
+    <%flash[:message] && flash[:message].each do |m|%>
+      <li><%=m%></li>
+    <%end%> 
+</div>
+
+<h2>Product Profile: <%=@product.name%> </h2>
 <br>
-<h4>Categories:<%@categories.each do |category|%> <%=category.name.capitalize%>, <%end%></h4>
+<h4>Categories:<%@categories.each do |category|%> <%=category.name%>, <%end%></h4>
     <p>Current Inventory: <%=@product.inventory%><p>
     <p>Source: <%=@product.source%><p>
     <p>Cost of Good: <%=@product.cost_of_good%><p>
