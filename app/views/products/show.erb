@@ -4,13 +4,12 @@
     <%end%> 
 </div>
 
-<h2>Product Profile: <%=@product.name%> </h2>
-<br>
-<h4>Categories:<%@categories.each do |category|%> <%=category.name%>, <%end%></h4>
-    <p>Current Inventory: <%=@product.inventory%><p>
-    <p>Source: <%=@product.source%><p>
-    <p>Cost of Good: <%=@product.cost_of_good%><p>
-    <p>Retail Price: <%=@product.retail_price%><p>
+<h2>Product Profile: <%=@product.name%> </h2><br>
+<h4><b>Categories:</b> <%@categories.each do |category|%> <%=category.name%>, <%end%></h4>
+    <p><b>Current Inventory:</b><%=@product.inventory%><p>
+    <p><b>Source:</b> <%=@product.source%><p>
+    <p><b>Cost of Good:</b> <%=@product.cost_of_good%><p>
+    <p><b>Retail Price:</b> <%=@product.retail_price%><p>
     <form action="/products/<%=@product.id%>" method="post">
         <input type="hidden" name="_method" value="delete">
         <input type="submit" value=" Delete Product ">   

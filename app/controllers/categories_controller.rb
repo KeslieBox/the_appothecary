@@ -20,7 +20,6 @@ class CategoriesController < ApplicationController
             flash[:message] = category.errors.full_messages
             redirect "/categories/new"
         else
-            # same issue as get "/categories" above, how do i only render it in the view if it is associated with current user       
             flash[:message] = ["Your new category was added successfully!", "Please add some new products to your category to see them here!"]
             redirect "/categories"
         end

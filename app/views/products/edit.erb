@@ -1,41 +1,30 @@
 <h2>Edit your product here!</h2>
-<%# need to add flash messages %>
 <form action="/products/<%=@product.id%>" method="post">
 <input type="hidden" name="_method" value="patch">
-    <p>Name <input type="text" id="product_name" name="product[name]" value="<%=@product.name%>"></p>
-    <p>Inventory (oz or item) <input type="text" id="product_inventory" name="product[inventory]" value="<%=@product.inventory%>"></p>
-    <p>Source <input type="text" id="product_source" name="product[source]"></p>
-    <p>Cost of Good (by oz or item) <input type="text" id="product_cost_of_good" name="product[cost_of_good]" value="<%=@product.cost_of_good%>"></p>
-    <p>Retail Price <input type="text" id="product_retail_price" name="product[retail_price]" value="<%=@product.retail_price%>"></p>
-    
-    <%# need to add: <p>Currently Associated Categories</p> %>
-    
-    <p>Current Categories:<%@product_categories.each do |category|%> <%=category.name%>, <%end%><p>
-    <p>Add New Category and/or select an existing one below:</p>
-    <p>New Category <input type="text" id="category_name" name="category[name]"></p>
+    <p><b>Name</b> <input type="text" id="product_name" name="product[name]" value="<%=@product.name%>"></p>
+    <p><b>Inventory</b> (oz or item) <input type="text" id="product_inventory" name="product[inventory]" value="<%=@product.inventory%>"></p>
+    <p><b>Source</b> <input type="text" id="product_source" name="product[source]"></p>
+    <p><b>Cost of Good</b> (by oz or item) <input type="text" id="product_cost_of_good" name="product[cost_of_good]" value="<%=@product.cost_of_good%>"></p>
+    <p><b>Retail Price</b> <input type="text" id="product_retail_price" name="product[retail_price]" value="<%=@product.retail_price%>"></p>
+        
+    <p><b>Current Categories:</b><%@product_categories.each do |category|%> <%=category.name%>, <%end%><p>
+    <p><b>Add New Category and/or select an existing ones below:</b></p>
+    <p><b>New Category</b><input type="text" id="category_name" name="category[name]"></p>
 
     <div class="flash"> 
         <%flash[:message] && flash[:message].each do |m|%>
         <li><%=m%></li>
         <%end%> 
-        
+
         <%flash[:success] && flash[:success].each do |m|%>
         <li><%=m%></li>
         <%end%> 
     </div>   
     
-    <p>Other Categories:</p>
+    <p><b>Existing Categories:</b></p>
         <%@categories.each do |category|%>
            <input type="checkbox" name="product[category_ids][]" id="<%=category.id%>" value="<%=category.id%>" <%='checked' if @product.categories.include?(category) %>><%=category.name%></input><br>
-        <%end%>
-
-  
-
-
-        <%# <input type="checkbox" id="herb" name="product[category]" value="Herb"><label for="product[category]"> Herb</label> %>
-        <%# <input type="radio" id="tincture" name="product[category]" value="Tincture"><label for="product[category]"> Tincture</label> %>
-        <%# <input type="radio" id="product" name="product[category]" value="Product"><label for="product[category]"> Product</label>   %>
-        <%# <input type="radio" id="other" name="product[category]" value="Other"><label for="product[category]"> Other</label>                       %>
+        <%end%>                  
     </p> 
     <p><input type="submit" value="Edit Product"></p>
     </form>

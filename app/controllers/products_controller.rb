@@ -12,50 +12,63 @@ class ProductsController < ApplicationController
         @categories = Category.all
         erb :"/products/new"
     end
-
-    ##this is working but with no option to add new category 
+    
+    # #working, but no prevention to creating duplicate products for the current user
     # post '/products' do
     #     redirect_if_not_logged_in
+    #     @categories = Category.all
     #     params[:product][:name] = params[:product][:name].capitalize
-    #     product = current_user.products.create(params[:product])
-        
-    #     if !product.valid?
-    #         flash[:message] = product.errors.full_messages  
+    #     @product = current_user.products.create(params[:product])
+    #     # @product = current_user.products.find_or_create_by(name: params[:product][:name])
+    #     # @product = Product.find_or_create_by(name: params[:product][:name])
+
+    #     category = Category.find_or_create_by(name: params[:category][:name].capitalize)
+    #     if !category.valid? && !params["category"]["name"].empty? 
+    #         @errors = category.errors.full_messages
+    #         erb :"/products/new"
+    #     elsif category && !params["category"]["name"].empty?
+    #         flash[:success] = ["Your category was successfully created!", "See checkboxes below to add the new category to this product", "Finish creating your product and click \"Create Product\" when you\'re done!"]
+    #         redirect "/products/new"
+    #     end
+
+    #     if !@product.valid? 
+    #         flash[:message] = @product.errors.full_messages  
+    #         redirect "/products/new"
+    #     elsif current_user.products.include?(@product)
+    #         flash[:message] = ["Please enter a product that doesn't already exist"]  
     #         redirect "/products/new"
     #     else
-    #         flash[:success] = ["Your new product was added successfully!"]
-    #         redirect "/products/#{product.id}"
+    #         flash[:success] = ["Your new product was created successfully!"]
+    #         redirect "/products/#{@product.id}"
     #     end
     # end
-
-    #trying to create an option to add new category at the same time you add a new product
+ 
     post '/products' do
         redirect_if_not_logged_in
         @categories = Category.all
-        params[:product][:name] = params[:product][:name].capitalize
-        @product = current_user.products.create(params[:product])
-
         category = Category.find_or_create_by(name: params[:category][:name].capitalize)
         if !category.valid? && !params["category"]["name"].empty? 
-            # flash[:message] = category.errors.full_messages
-            # redirect "/products/new"
             @errors = category.errors.full_messages
             erb :"/products/new"
         elsif category && !params["category"]["name"].empty?
-            # @product.update(params[:product])
-            flash[:success] = ["Your category was added successfully!", "See checkboxes below to add the new category to this product", "Finish creating your product and click \"Create Product\" when you\'re done!"]
+            flash[:success] = ["Your category was successfully created!", "See checkboxes below to add the new category to this product", "Finish creating your product and click \"Create Product\" when you\'re done!"]
             redirect "/products/new"
         end
         
-        if !product.valid?
-            flash[:message] = product.errors.full_messages  
-            redirect "/products/new"
+        if params[:product][:name].empty?
+            @errors = ["Name can't be empty"]
+            erb :"/products/new"
+        elsif current_user.products.find_by(name: params[:product][:name])
+            @errors = ["Please enter a product that doesn't already exist"]  
+            erb :"/products/new"
         else
+            params[:product][:name] = params[:product][:name].capitalize
+            @product = current_user.products.create(params[:product])
             flash[:success] = ["Your new product was created successfully!"]
-            redirect "/products/#{product.id}"
+            redirect "/products/#{@new_product.id}"
         end
     end
- 
+
     get '/products/:id' do
         redirect_if_not_logged_in
         @product = current_user.products.find_by(id: params[:id])
@@ -84,19 +97,7 @@ class ProductsController < ApplicationController
 
         erb :"/products/edit"
     end
-# this is working with no option to add new category in edit
-    # patch '/products/:id' do
-    #     redirect_if_not_logged_in
-    #     @product = current_user.products.find_by(id: params[:id])
-    #     @product.update(params[:product])
-    #     # binding.pry
-    #     # @category = current_user.categories.find_by(id: params[:product][:category_ids])
-    #     # @category.update(params[:category])
-      
-    #     redirect "/products/#{@product.id}"      
-    # end
 
-# trying to create option to add new category from edit page
     patch '/products/:id' do
         redirect_if_not_logged_in
         @product = current_user.products.find_by(id: params[:id])
@@ -116,7 +117,6 @@ class ProductsController < ApplicationController
             flash[:message] = ["Your product was updated successfully!"]
             redirect "/products/#{@product.id}" 
         end
-        # redirect "/products/#{@product.id}"     
     end
 
     delete '/products/:id' do
