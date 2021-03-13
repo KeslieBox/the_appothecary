@@ -20,6 +20,10 @@ class ApplicationController < Sinatra::Base
       @user = User.find_by(id: session[:user_id])
     end
 
+    def current_category
+      @category = current_user.categories.find_by(id: params[:id])
+    end
+
     def redirect_if_not_logged_in
         redirect '/login' unless current_user
     end

@@ -14,7 +14,7 @@ class CategoriesController < ApplicationController
     post '/categories' do
         redirect_if_not_logged_in
         categories = Category.all        
-        category = Category.find_or_create_by(name: params[:category][:name].capitalize)
+        category = Category.find_or_create_by(name: params[:category][:name].upcase)
 
         if !category
             flash[:message] = category.errors.full_messages
@@ -27,13 +27,12 @@ class CategoriesController < ApplicationController
  
     get '/categories/:id' do
         redirect_if_not_logged_in
-        @category = current_user.categories.find_by(id: params[:id])
-
-        if !@category
+        current_category
+        if !current_category
             flash[:message] = ["Whoops that category doesn't exist yet!"]
             redirect "/categories"
         else
-            @products = @category.products.where(user: current_user)
+            @products = current_category.products.where(user: current_user)
            
             erb :"/categories/show"
         end    
@@ -41,8 +40,8 @@ class CategoriesController < ApplicationController
     
     get '/categories/:id/edit' do
         redirect_if_not_logged_in
-        @category = current_user.categories.find_by(id: params[:id])
-        if !@category 
+        current_category
+        if !current_category
             flash[:message] = ["Whoops! That category doesn't exist!"]
             redirect "/products"
         end
@@ -51,18 +50,17 @@ class CategoriesController < ApplicationController
 
     patch '/categories/:id' do
         redirect_if_not_logged_in
-        @category = current_user.categories.find_by(id: params[:id])
-        @category.update(params[:category])
-        @products = @category.products
+        current_category
+        @products = current_category.products
       
         erb :"/categories/show"        
     end
 
     delete '/categories/:id' do
         redirect_if_not_logged_in
-        @category = current_user.categories.find_by(id: params[:id])
-        if @category
-            @category.delete
+        current_category
+        if current_category
+            current_category.delete
             redirect "/categories"
         else
             @errors = ["Invalid option"]

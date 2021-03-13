@@ -12,41 +12,11 @@ class ProductsController < ApplicationController
         @categories = Category.all
         erb :"/products/new"
     end
-    
-    # #working, but no prevention to creating duplicate products for the current user
-    # post '/products' do
-    #     redirect_if_not_logged_in
-    #     @categories = Category.all
-    #     params[:product][:name] = params[:product][:name].capitalize
-    #     @product = current_user.products.create(params[:product])
-    #     # @product = current_user.products.find_or_create_by(name: params[:product][:name])
-    #     # @product = Product.find_or_create_by(name: params[:product][:name])
-
-    #     category = Category.find_or_create_by(name: params[:category][:name].capitalize)
-    #     if !category.valid? && !params["category"]["name"].empty? 
-    #         @errors = category.errors.full_messages
-    #         erb :"/products/new"
-    #     elsif category && !params["category"]["name"].empty?
-    #         flash[:success] = ["Your category was successfully created!", "See checkboxes below to add the new category to this product", "Finish creating your product and click \"Create Product\" when you\'re done!"]
-    #         redirect "/products/new"
-    #     end
-
-    #     if !@product.valid? 
-    #         flash[:message] = @product.errors.full_messages  
-    #         redirect "/products/new"
-    #     elsif current_user.products.include?(@product)
-    #         flash[:message] = ["Please enter a product that doesn't already exist"]  
-    #         redirect "/products/new"
-    #     else
-    #         flash[:success] = ["Your new product was created successfully!"]
-    #         redirect "/products/#{@product.id}"
-    #     end
-    # end
  
     post '/products' do
         redirect_if_not_logged_in
         @categories = Category.all
-        category = Category.find_or_create_by(name: params[:category][:name].capitalize)
+        category = Category.find_or_create_by(name: params[:category][:name].upcase)
         if !category.valid? && !params["category"]["name"].empty? 
             @errors = category.errors.full_messages
             erb :"/products/new"
@@ -62,10 +32,10 @@ class ProductsController < ApplicationController
             @errors = ["Please enter a product that doesn't already exist"]  
             erb :"/products/new"
         else
-            params[:product][:name] = params[:product][:name].capitalize
+            params[:product][:name] = params[:product][:name].upcase
             @product = current_user.products.create(params[:product])
             flash[:success] = ["Your new product was created successfully!"]
-            redirect "/products/#{@new_product.id}"
+            redirect "/products/#{@product.id}"
         end
     end
 
