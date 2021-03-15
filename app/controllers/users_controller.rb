@@ -23,12 +23,12 @@ class UsersController < ApplicationController
 
     get '/users/:id' do
         redirect_if_not_logged_in
-        @user = User.find_by(id: params[:id])
-        @products = @user.products
 
         if !@user
             erb :"/users/login"
         else
+            @products = current_user.products
+            @categories = current_user.categories.uniq
             erb :"/users/show"
         end
     end

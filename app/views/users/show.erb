@@ -1,3 +1,17 @@
+  <div class="flash"> 
+    <%flash[:message] && flash[:message].each do |m|%>
+      <li><%=m%></li>
+    <%end%> 
+
+    <%flash[:success] && flash[:success].each do |m|%>
+      <li><%=m%></li>
+    <%end%> 
+
+    <%@errors && @errors.each do |m|%>
+      <li><%=m%></li>
+    <%end%> 
+  </div>   
+
 <p>Welcome to your Appothecary, <%= @user.username%>!<p>
 
   <h2>Products</h2>
@@ -6,4 +20,11 @@
       <li><a href="/products/<%=product.id%>"><%=product.name.capitalize%></a></li>
     <%end%>
   </ol>
+
+  <h2>Categories</h2>
+    <ol>
+      <% @categories.each do |category| %>
+        <li><a href="/categories/<%=category.id%>"><%=category.name.capitalize%></a></li>
+      <%end%>
+    </ol> 
 

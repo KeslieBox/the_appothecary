@@ -24,6 +24,10 @@ class ApplicationController < Sinatra::Base
       @category = current_user.categories.find_by(id: params[:id])
     end
 
+    def check_user(obj)
+      obj && obj.user == current_user
+    end
+
     def redirect_if_not_logged_in
         redirect '/login' unless current_user
     end

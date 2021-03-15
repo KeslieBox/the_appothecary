@@ -27,12 +27,13 @@ class CategoriesController < ApplicationController
  
     get '/categories/:id' do
         redirect_if_not_logged_in
-        current_category
-        if !current_category
+        @category = current_user.categories.find_by(id: params[:id])
+
+        if !@category
             flash[:message] = ["Whoops that category doesn't exist yet!"]
             redirect "/categories"
         else
-            @products = current_category.products.where(user: current_user)
+            @products = @category.products.where(user: current_user)
            
             erb :"/categories/show"
         end    
@@ -40,8 +41,8 @@ class CategoriesController < ApplicationController
     
     get '/categories/:id/edit' do
         redirect_if_not_logged_in
-        current_category
-        if !current_category
+        @category = current_user.categories.find_by(id: params[:id])
+        if !@category 
             flash[:message] = ["Whoops! That category doesn't exist!"]
             redirect "/products"
         end
@@ -50,17 +51,18 @@ class CategoriesController < ApplicationController
 
     patch '/categories/:id' do
         redirect_if_not_logged_in
-        current_category
-        @products = current_category.products
+        @category = current_user.categories.find_by(id: params[:id])
+        @category.update(params[:category])
+        @products = @category.products
       
         erb :"/categories/show"        
     end
 
     delete '/categories/:id' do
         redirect_if_not_logged_in
-        current_category
-        if current_category
-            current_category.delete
+        @category = current_user.categories.find_by(id: params[:id])
+        if check_user(@category)
+            @category.delete
             redirect "/categories"
         else
             @errors = ["Invalid option"]

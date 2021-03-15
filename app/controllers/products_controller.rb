@@ -72,7 +72,7 @@ class ProductsController < ApplicationController
         redirect_if_not_logged_in
         @product = current_user.products.find_by(id: params[:id])
         
-        category = Category.find_or_create_by(name: params[:category][:name].capitalize)
+        category = Category.find_or_create_by(name: params[:category][:name].upcase)
         if !category.valid? && !params["category"]["name"].empty?
             flash[:message] = category.errors.full_messages
             redirect "/products/#{@product.id}/edit"
@@ -92,7 +92,12 @@ class ProductsController < ApplicationController
     delete '/products/:id' do
         redirect_if_not_logged_in
         @product = current_user.products.find_by(id: params[:id])
-        @product.delete
-        redirect "/products"
+        if check_user(@product)
+            @product.delete
+            redirect "/products"
+        else
+            @errors = ["Invalid option"]
+            erb :"/products/show"
+        end
     end
 end

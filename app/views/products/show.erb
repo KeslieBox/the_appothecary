@@ -2,6 +2,11 @@
     <%flash[:message] && flash[:message].each do |m|%>
       <li><%=m%></li>
     <%end%> 
+
+    <%@errors && @errors.each do |m|%>
+      <li><%=m%></li>
+    <%end%> 
+
 </div>
 
 <h2>Product Profile: <%=@product.name%> </h2><br>
